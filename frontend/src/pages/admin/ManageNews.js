@@ -12,7 +12,7 @@ export default function ManageNews() {
   const [news, setNews] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [editId, setEditId] = useState(null);
-  const [formData, setFormData] = useState({ title: '', content: '', image_url: '', category: 'General' });
+  const [formData, setFormData] = useState({ title: '', content: '', image_url: '', category: 'General', event_date: '' });
 
   useEffect(() => {
     fetchNews();
@@ -34,11 +34,12 @@ export default function ManageNews() {
         title: item.title || '',
         content: item.content || '',
         image_url: item.image_url || '',
-        category: item.category || 'General'
+        category: item.category || 'General',
+        event_date: item.event_date || ''
       });
     } else {
       setEditId(null);
-      setFormData({ title: '', content: '', image_url: '', category: 'General' });
+      setFormData({ title: '', content: '', image_url: '', category: 'General', event_date: '' });
     }
     setIsOpen(true);
   };
@@ -52,7 +53,7 @@ export default function ManageNews() {
         await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/news`, formData, { withCredentials: true });
       }
       setIsOpen(false);
-      setFormData({ title: '', content: '', image_url: '', category: 'General' });
+      setFormData({ title: '', content: '', image_url: '', category: 'General', event_date: '' });
       setEditId(null);
       fetchNews();
     } catch (error) {
@@ -90,9 +91,15 @@ export default function ManageNews() {
                 <label className="text-sm font-medium mb-1 block">Título</label>
                 <Input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required data-testid="news-title-input" />
               </div>
-              <div>
-                <label className="text-sm font-medium mb-1 block">Categoría</label>
-                <Input value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} required data-testid="news-category-input" />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium mb-1 block">Categoría</label>
+                  <Input value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} required data-testid="news-category-input" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1 block">Fecha del Evento (Opcional)</label>
+                  <Input type="date" value={formData.event_date} onChange={e => setFormData({...formData, event_date: e.target.value})} data-testid="news-event-date-input" />
+                </div>
               </div>
               <div>
                 <label className="text-sm font-medium mb-1 block">URL de Imagen (Opcional)</label>

@@ -141,6 +141,7 @@ class NewsItem(BaseModel):
     content: str
     image_url: Optional[str] = None
     category: str = "General"
+    event_date: Optional[str] = None
 
 class ResourceItem(BaseModel):
     title: str
