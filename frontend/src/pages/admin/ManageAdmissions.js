@@ -10,6 +10,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../componen
 export default function ManageAdmissions() {
   const [admissions, setAdmissions] = useState([]);
   const [selectedAdmission, setSelectedAdmission] = useState(null);
+  
+  const [filterYear, setFilterYear] = useState('all');
+  const [filterMonth, setFilterMonth] = useState('all');
 
   useEffect(() => {
     fetchAdmissions();
@@ -46,6 +49,16 @@ export default function ManageAdmissions() {
     }
   };
 
+  const availableYears = [...new Set(admissions.map(a => a.created_at ? new Date(a.created_at).getFullYear().toString() : ''))].filter(Boolean).sort().reverse();
+  
+  const filteredAdmissions = admissions.filter(adm => {
+    if (!adm.created_at) return true;
+    const date = new Date(adm.created_at);
+    const matchYear = filterYear === 'all' || date.getFullYear().toString() === filterYear;
+    const matchMonth = filterMonth === 'all' || (date.getMonth() + 1).toString() === filterMonth;
+    return matchYear && matchMonth;
+  });
+
   const exportToCSV = () => {
     const headers = ['Aspirante', 'Grado', 'Acudiente', 'Teléfono', 'Email', 'Fecha', 'Estado', 'Comentarios'];
     
@@ -56,7 +69,7 @@ export default function ManageAdmissions() {
       'rejected': 'Rechazado'
     };
 
-    const csvRows = admissions.map(adm => [
+    const csvRows = filteredAdmissions.map(adm => [
       `"${(adm.student_name || '').replace(/"/g, '""')}"`,
       `"${(adm.student_grade || '').replace(/"/g, '""')}"`,
       `"${(adm.parent_name || '').replace(/"/g, '""')}"`,
@@ -83,14 +96,43 @@ export default function ManageAdmissions() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+      <div className="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex-wrap gap-4">
         <div>
           <h2 className="font-heading text-2xl font-bold text-slate-800">Solicitudes de Admisión</h2>
           <p className="text-slate-500 mt-1 text-sm">Gestiona las pre-inscripciones realizadas por los aspirantes en la web.</p>
         </div>
-        <Button onClick={exportToCSV} variant="outline" className="flex items-center gap-2 border-slate-200 hover:bg-slate-50">
-          <Download className="w-4 h-4" /> Exportar CSV
-        </Button>
+        
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <select 
+              value={filterYear} 
+              onChange={e => setFilterYear(e.target.value)}
+              className="h-10 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900"
+            >
+              <option value="all">Todos los Años</option>
+              {availableYears.map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+            
+            <select 
+              value={filterMonth} 
+              onChange={e => setFilterMonth(e.target.value)}
+              className="h-10 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900"
+            >
+              <option value="all">Todos los Meses</option>
+              {Array.from({length: 12}).map((_, i) => (
+                <option key={i+1} value={(i+1).toString()}>
+                  {format(new Date(2000, i, 1), 'MMMM', { locale: es }).replace(/^\w/, c => c.toUpperCase())}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <Button onClick={exportToCSV} variant="outline" className="flex items-center gap-2 border-slate-200 hover:bg-slate-50">
+            <Download className="w-4 h-4" /> Exportar CSV
+          </Button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
@@ -106,11 +148,11 @@ export default function ManageAdmissions() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {admissions.length === 0 ? (
+            {filteredAdmissions.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-slate-500">No hay solicitudes de admisión recientes.</TableCell>
+                <TableCell colSpan={6} className="text-center py-8 text-slate-500">No hay solicitudes de admisión para este periodo.</TableCell>
               </TableRow>
-            ) : admissions.map((item) => (
+            ) : filteredAdmissions.map((item) => (
               <TableRow key={item.id} className={`hover:bg-slate-50 cursor-pointer ${item.status === 'pending' ? 'bg-amber-50/20' : ''}`}>
                 <TableCell className="font-medium">{item.student_name}</TableCell>
                 <TableCell>{item.student_grade}</TableCell>

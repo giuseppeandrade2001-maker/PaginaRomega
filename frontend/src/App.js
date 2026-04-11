@@ -20,6 +20,8 @@ import ContactMessages from './pages/admin/ContactMessages';
 
 import ManageAdmissions from './pages/admin/ManageAdmissions';
 import Admissions from './pages/Admissions';
+import ManageStaff from './pages/admin/ManageStaff';
+import Staff from './pages/Staff';
 
 export default function App() {
   return (
@@ -31,6 +33,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/historia" element={<About />} />
             <Route path="/oferta-academica" element={<Academics />} />
+            <Route path="/equipo" element={<Staff />} />
             <Route path="/noticias" element={<News />} />
             <Route path="/recursos" element={<Resources />} />
             <Route path="/contacto" element={<Contact />} />
@@ -43,6 +46,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="noticias" element={<ManageNews />} />
             <Route path="recursos" element={<ManageResources />} />
+            <Route path="directorio" element={<ManageStaff />} />
             <Route path="mensajes" element={<ContactMessages />} />
             <Route path="admisiones" element={<ManageAdmissions />} />
           </Route>

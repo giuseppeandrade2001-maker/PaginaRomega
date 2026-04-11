@@ -12,6 +12,7 @@ export default function Header() {
     { name: 'Inicio', path: '/' },
     { name: 'Historia', path: '/historia' },
     { name: 'Oferta Académica', path: '/oferta-academica' },
+    { name: 'Nuestro Equipo', path: '/equipo' },
     { name: 'Noticias', path: '/noticias' },
     { name: 'Recursos', path: '/recursos' },
     { name: 'Admisiones', path: '/admisiones' },

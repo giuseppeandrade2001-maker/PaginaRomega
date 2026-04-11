@@ -164,6 +164,13 @@ class AdmissionRequest(BaseModel):
     phone: str
     comments: Optional[str] = None
 
+class StaffMember(BaseModel):
+    name: str
+    role: str
+    email: Optional[EmailStr] = None
+    department: str = "Docente"
+    image_url: Optional[str] = None
+
 # Auth Routes
 @app.post("/api/auth/login")
 async def login(req: LoginRequest, response: Response, request: Request):
@@ -346,6 +353,40 @@ async def update_admission_status(id: str, status_data: dict, user: dict = Depen
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Admission request not found")
     return {"message": "Status updated"}
+
+# Staff Directory
+@app.get("/api/staff")
+async def get_staff():
+    cursor = db.staff.find().sort("name", 1)
+    staff = await cursor.to_list(length=100)
+    for s in staff:
+        s["id"] = str(s.pop("_id"))
+    return {"data": staff}
+
+@app.post("/api/staff")
+async def create_staff(staff: StaffMember, user: dict = Depends(require_admin)):
+    doc = staff.model_dump()
+    doc["created_at"] = datetime.now(timezone.utc)
+    res = await db.staff.insert_one(doc)
+    doc["id"] = str(res.inserted_id)
+    doc.pop("_id", None)
+    return doc
+
+@app.put("/api/staff/{id}")
+async def update_staff(id: str, staff: StaffMember, user: dict = Depends(require_admin)):
+    doc = staff.model_dump()
+    result = await db.staff.update_one({"_id": ObjectId(id)}, {"$set": doc})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Staff not found")
+    doc["id"] = id
+    return doc
+
+@app.delete("/api/staff/{id}")
+async def delete_staff(id: str, user: dict = Depends(require_admin)):
+    result = await db.staff.delete_one({"_id": ObjectId(id)})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Staff not found")
+    return {"message": "Deleted"}
 
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=8001, reload=True)
