@@ -102,21 +102,21 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Nombre Completo</label>
-                  <Input required value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className="bg-white border-slate-300 h-12" data-testid="contact-name" />
+                  <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-2">Nombre Completo</label>
+                  <Input id="name" name="name" required value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className="bg-white border-slate-300 h-12" data-testid="contact-name" />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Correo Electrónico</label>
-                  <Input required type="email" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} className="bg-white border-slate-300 h-12" data-testid="contact-email" />
+                  <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">Correo Electrónico</label>
+                  <Input id="email" name="email" required type="email" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} className="bg-white border-slate-300 h-12" data-testid="contact-email" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Asunto</label>
-                <Input required value={form.subject} onChange={e=>setForm({...form, subject: e.target.value})} className="bg-white border-slate-300 h-12" data-testid="contact-subject" />
+                <label htmlFor="subject" className="block text-sm font-semibold text-slate-700 mb-2">Asunto</label>
+                <Input id="subject" name="subject" required value={form.subject} onChange={e=>setForm({...form, subject: e.target.value})} className="bg-white border-slate-300 h-12" data-testid="contact-subject" />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Mensaje</label>
-                <Textarea required rows={6} value={form.message} onChange={e=>setForm({...form, message: e.target.value})} className="bg-white border-slate-300" data-testid="contact-message" />
+                <label htmlFor="message" className="block text-sm font-semibold text-slate-700 mb-2">Mensaje</label>
+                <Textarea id="message" name="message" required rows={6} value={form.message} onChange={e=>setForm({...form, message: e.target.value})} className="bg-white border-slate-300" data-testid="contact-message" />
               </div>
               <Button type="submit" disabled={status === 'sending'} className="w-full h-12 text-lg bg-blue-700 hover:bg-blue-800 text-white shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all" data-testid="contact-submit">
                 {status === 'sending' ? 'Enviando...' : 'Enviar Mensaje'}
