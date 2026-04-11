@@ -1,89 +1,291 @@
-from fastapi import FastAPI, APIRouter
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+
+import bcrypt
+import jwt
+from datetime import datetime, timezone, timedelta
+from typing import Optional, List, Any
+from bson import ObjectId
+
+from fastapi import FastAPI, HTTPException, Request, Response, Depends, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, EmailStr, Field
+import motor.motor_asyncio
+import uvicorn
 import logging
-from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List
-import uuid
-from datetime import datetime, timezone
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
+app = FastAPI(title="Colegio Técnico Romega API")
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-# Create the main app without a prefix
-app = FastAPI()
-
-# Create a router with the /api prefix
-api_router = APIRouter(prefix="/api")
-
-
-# Define Models
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-class StatusCheckCreate(BaseModel):
-    client_name: str
-
-# Add your routes to the router instead of directly to app
-@api_router.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
-    
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
-    
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
-
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
-    
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    
-    return status_checks
-
-# Include the router in the main app
-app.include_router(api_router)
+CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "*").split(",")
 
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=CORS_ORIGINS if "*" not in CORS_ORIGINS else [],
+    allow_origin_regex=".*" if "*" in CORS_ORIGINS else None,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017")
+DB_NAME = os.environ.get("DB_NAME", "test_database")
+JWT_SECRET = os.environ.get("JWT_SECRET", "default_secret")
+JWT_ALGORITHM = "HS256"
 
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
+client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
+
+# Password hashing
+def hash_password(password: str) -> str:
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
+    return hashed.decode("utf-8")
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
+
+# JWT Functions
+def create_access_token(user_id: str, email: str) -> str:
+    payload = {
+        "sub": user_id,
+        "email": email,
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=60),
+        "type": "access"
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+def create_refresh_token(user_id: str) -> str:
+    payload = {
+        "sub": user_id,
+        "exp": datetime.now(timezone.utc) + timedelta(days=7),
+        "type": "refresh"
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+async def get_current_user(request: Request) -> dict:
+    token = request.cookies.get("access_token")
+    if not token:
+        auth_header = request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header[7:]
+    
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if payload.get("type") != "access":
+            raise HTTPException(status_code=401, detail="Invalid token type")
+        
+        user = await db.users.find_one({"_id": ObjectId(payload["sub"])})
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+        
+        user["_id"] = str(user["_id"])
+        user.pop("password_hash", None)
+        return user
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+def require_admin(user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return user
+
+# Startup Event
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Starting up API...")
+    # Create Indexes
+    await db.users.create_index("email", unique=True)
+    await db.login_attempts.create_index("identifier")
+    
+    # Seed Admin
+    admin_email = os.environ.get("ADMIN_EMAIL", "admin@example.com")
+    admin_password = os.environ.get("ADMIN_PASSWORD", "admin123")
+    
+    existing = await db.users.find_one({"email": admin_email})
+    if existing is None:
+        hashed = hash_password(admin_password)
+        await db.users.insert_one({
+            "email": admin_email,
+            "password_hash": hashed,
+            "name": "Administrador",
+            "role": "admin",
+            "created_at": datetime.now(timezone.utc)
+        })
+        logger.info(f"Admin user created with email: {admin_email}")
+    elif not verify_password(admin_password, existing["password_hash"]):
+        await db.users.update_one(
+            {"email": admin_email},
+            {"$set": {"password_hash": hash_password(admin_password)}}
+        )
+        logger.info(f"Admin password updated for: {admin_email}")
+
+# Models
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class NewsItem(BaseModel):
+    title: str
+    content: str
+    image_url: Optional[str] = None
+    category: str = "General"
+
+class ResourceItem(BaseModel):
+    title: str
+    file_url: str
+    category: str # "estudiantes" or "docentes"
+    description: Optional[str] = None
+
+class ContactMessage(BaseModel):
+    name: str
+    email: EmailStr
+    subject: str
+    message: str
+
+# Auth Routes
+@app.post("/api/auth/login")
+async def login(req: LoginRequest, response: Response, request: Request):
+    ip = request.client.host if request.client else "unknown"
+    identifier = f"{ip}:{req.email.lower()}"
+    
+    # Check brute force
+    recent_attempts = await db.login_attempts.count_documents({
+        "identifier": identifier,
+        "timestamp": {"$gt": datetime.now(timezone.utc) - timedelta(minutes=15)}
+    })
+    
+    if recent_attempts >= 5:
+        raise HTTPException(status_code=429, detail="Too many failed attempts. Try again in 15 minutes.")
+        
+    user = await db.users.find_one({"email": req.email.lower()})
+    
+    if not user or not verify_password(req.password, user["password_hash"]):
+        await db.login_attempts.insert_one({
+            "identifier": identifier,
+            "timestamp": datetime.now(timezone.utc)
+        })
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+    # Clear attempts
+    await db.login_attempts.delete_many({"identifier": identifier})
+    
+    access_token = create_access_token(str(user["_id"]), user["email"])
+    refresh_token = create_refresh_token(str(user["_id"]))
+    
+    # Use SameSite None for cross-origin testing, otherwise Lax
+    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax", max_age=3600, path="/")
+    response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, secure=False, samesite="lax", max_age=604800, path="/")
+    
+    user["_id"] = str(user["_id"])
+    user.pop("password_hash", None)
+    return user
+
+@app.post("/api/auth/logout")
+async def logout(response: Response, user: dict = Depends(get_current_user)):
+    response.delete_cookie("access_token", path="/")
+    response.delete_cookie("refresh_token", path="/")
+    return {"message": "Logged out"}
+
+@app.get("/api/auth/me")
+async def me(user: dict = Depends(get_current_user)):
+    return user
+
+# Public Routes
+@app.get("/api/news")
+async def get_news():
+    cursor = db.news.find().sort("created_at", -1)
+    news = await cursor.to_list(length=100)
+    for n in news:
+        n["id"] = str(n.pop("_id"))
+    return {"data": news}
+
+@app.get("/api/resources")
+async def get_resources():
+    cursor = db.resources.find().sort("created_at", -1)
+    resources = await cursor.to_list(length=100)
+    for r in resources:
+        r["id"] = str(r.pop("_id"))
+    return {"data": resources}
+
+@app.post("/api/contact")
+async def submit_contact(msg: ContactMessage):
+    # Enfoque híbrido: Guardar en base de datos
+    new_msg = {
+        **msg.model_dump(),
+        "created_at": datetime.now(timezone.utc),
+        "status": "unread"
+    }
+    result = await db.contact_messages.insert_one(new_msg)
+    
+    # Aquí se integraría Resend en el futuro (Simulación por ahora)
+    logger.info(f"Simulando envío de correo de notificación: Nuevo mensaje de {msg.name}")
+    
+    return {"message": "Mensaje enviado y guardado correctamente."}
+
+# Admin Routes
+@app.post("/api/news")
+async def create_news(news: NewsItem, user: dict = Depends(require_admin)):
+    doc = news.model_dump()
+    doc["created_at"] = datetime.now(timezone.utc)
+    doc["created_by"] = user["_id"]
+    res = await db.news.insert_one(doc)
+    doc["id"] = str(res.inserted_id)
+    doc.pop("_id", None)
+    return doc
+
+@app.delete("/api/news/{id}")
+async def delete_news(id: str, user: dict = Depends(require_admin)):
+    result = await db.news.delete_one({"_id": ObjectId(id)})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="News not found")
+    return {"message": "Deleted"}
+
+@app.post("/api/resources")
+async def create_resource(res: ResourceItem, user: dict = Depends(require_admin)):
+    doc = res.model_dump()
+    doc["created_at"] = datetime.now(timezone.utc)
+    doc["created_by"] = user["_id"]
+    result = await db.resources.insert_one(doc)
+    doc["id"] = str(result.inserted_id)
+    doc.pop("_id", None)
+    return doc
+
+@app.delete("/api/resources/{id}")
+async def delete_resource(id: str, user: dict = Depends(require_admin)):
+    result = await db.resources.delete_one({"_id": ObjectId(id)})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Resource not found")
+    return {"message": "Deleted"}
+
+@app.get("/api/contact-messages")
+async def get_contact_messages(user: dict = Depends(require_admin)):
+    cursor = db.contact_messages.find().sort("created_at", -1)
+    messages = await cursor.to_list(length=100)
+    for m in messages:
+        m["id"] = str(m.pop("_id"))
+    return {"data": messages}
+
+@app.put("/api/contact-messages/{id}/read")
+async def mark_message_read(id: str, user: dict = Depends(require_admin)):
+    result = await db.contact_messages.update_one(
+        {"_id": ObjectId(id)},
+        {"$set": {"status": "read"}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Message not found")
+    return {"message": "Marked as read"}
+
+if __name__ == "__main__":
+    uvicorn.run("server:app", host="0.0.0.0", port=8001, reload=True)
