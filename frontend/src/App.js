@@ -23,6 +23,8 @@ import Admissions from './pages/Admissions';
 import ManageStaff from './pages/admin/ManageStaff';
 import Staff from './pages/Staff';
 
+import ManageGallery from './pages/admin/ManageGallery';
+
 export default function App() {
   return (
     <AuthProvider>
@@ -46,6 +48,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="noticias" element={<ManageNews />} />
             <Route path="recursos" element={<ManageResources />} />
+            <Route path="galeria" element={<ManageGallery />} />
             <Route path="directorio" element={<ManageStaff />} />
             <Route path="mensajes" element={<ContactMessages />} />
             <Route path="admisiones" element={<ManageAdmissions />} />

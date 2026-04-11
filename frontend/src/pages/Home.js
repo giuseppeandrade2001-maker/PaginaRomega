@@ -6,6 +6,7 @@ import { Button } from '../../components/ui/button';
 
 export default function Home() {
   const [recentNews, setRecentNews] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -16,15 +17,19 @@ export default function Home() {
         console.error(error);
       }
     };
+    
+    const fetchGallery = async () => {
+      try {
+        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/gallery`);
+        setGalleryImages(data.data.slice(0, 8)); // Mostrar hasta 8 imágenes
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
     fetchNews();
+    fetchGallery();
   }, []);
-
-  const galleryImages = [
-    "https://images.unsplash.com/photo-1758270704524-596810e891b5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwzfHxzdHVkZW50cyUyMHN0dWR5aW5nJTIwaW4lMjBjbGFzc3Jvb218ZW58MHx8fHwxNzc1OTM4ODk3fDA&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1577896851231-70ef18881754?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwzfHxzY2hvb2wlMjBsaWJyYXJ5fGVufDB8fHx8MTc3NTkzODg5N3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1546410531-b4ec756317b6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwzfHxzdHVkZW50cyUyMGxlYXJuaW5nfGVufDB8fHx8MTc3NTkzODg5N3ww&ixlib=rb-4.1.0&q=85",
-    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwxfHxzdHVkZW50c3xlbnwwfHx8fDE3NzU5Mzg4OTN8MA&ixlib=rb-4.1.0&q=85"
-  ];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -89,28 +94,34 @@ export default function Home() {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 text-slate-400 mb-6">
-            <ImageIcon className="w-8 h-8" />
+      {galleryImages.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 text-slate-400 mb-6">
+              <ImageIcon className="w-8 h-8" />
+            </div>
+            <h2 className="font-heading text-4xl font-bold text-slate-900 mb-4">Vida Escolar</h2>
+            <p className="text-lg text-slate-600 font-sans max-w-2xl mx-auto mb-12">Un vistazo a nuestras actividades, instalaciones y el entorno que compartimos día a día en el Colegio Técnico Romega.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {galleryImages.map((img) => (
+                <div key={img.id} className="relative h-64 overflow-hidden rounded-2xl shadow-sm group">
+                  <img 
+                    src={img.image_url} 
+                    alt={img.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/60 transition-colors duration-300 flex items-center justify-center">
+                    <p className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-bold px-4 text-center">
+                      {img.title}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <h2 className="font-heading text-4xl font-bold text-slate-900 mb-4">Vida Escolar</h2>
-          <p className="text-lg text-slate-600 font-sans max-w-2xl mx-auto mb-12">Un vistazo a nuestras actividades, instalaciones y el entorno que compartimos día a día en el Colegio Técnico Romega.</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {galleryImages.map((src, idx) => (
-              <div key={idx} className="relative h-64 overflow-hidden rounded-2xl shadow-sm group">
-                <img 
-                  src={src} 
-                  alt={`Galería ${idx + 1}`} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                />
-                <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/20 transition-colors duration-300"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Recent News Section */}
       <section className="py-24 bg-slate-50 border-t border-slate-200">
