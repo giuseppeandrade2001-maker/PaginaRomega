@@ -4,7 +4,7 @@ import { Button } from '../../components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { CheckCircle, Clock, XCircle, Search } from 'lucide-react';
+import { CheckCircle, Clock, XCircle, Search, Download } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog';
 
 export default function ManageAdmissions() {
@@ -46,11 +46,51 @@ export default function ManageAdmissions() {
     }
   };
 
+  const exportToCSV = () => {
+    const headers = ['Aspirante', 'Grado', 'Acudiente', 'Teléfono', 'Email', 'Fecha', 'Estado', 'Comentarios'];
+    
+    const statusMap = {
+      'pending': 'Pendiente',
+      'reviewed': 'En Revisión',
+      'accepted': 'Aceptado',
+      'rejected': 'Rechazado'
+    };
+
+    const csvRows = admissions.map(adm => [
+      `"${(adm.student_name || '').replace(/"/g, '""')}"`,
+      `"${(adm.student_grade || '').replace(/"/g, '""')}"`,
+      `"${(adm.parent_name || '').replace(/"/g, '""')}"`,
+      `"${(adm.phone || '').replace(/"/g, '""')}"`,
+      `"${(adm.email || '').replace(/"/g, '""')}"`,
+      `"${adm.created_at ? format(new Date(adm.created_at), 'dd/MM/yyyy HH:mm') : ''}"`,
+      `"${statusMap[adm.status] || adm.status}"`,
+      `"${(adm.comments || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`
+    ]);
+
+    const csvString = [headers.join(','), ...csvRows.map(row => row.join(','))].join('\n');
+    
+    // Add BOM for Excel UTF-8 support
+    const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `admisiones_romega_${format(new Date(), 'yyyyMMdd_HHmm')}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-        <h2 className="font-heading text-2xl font-bold text-slate-800">Solicitudes de Admisión</h2>
-        <p className="text-slate-500 mt-1 text-sm">Gestiona las pre-inscripciones realizadas por los aspirantes en la web.</p>
+      <div className="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+        <div>
+          <h2 className="font-heading text-2xl font-bold text-slate-800">Solicitudes de Admisión</h2>
+          <p className="text-slate-500 mt-1 text-sm">Gestiona las pre-inscripciones realizadas por los aspirantes en la web.</p>
+        </div>
+        <Button onClick={exportToCSV} variant="outline" className="flex items-center gap-2 border-slate-200 hover:bg-slate-50">
+          <Download className="w-4 h-4" /> Exportar CSV
+        </Button>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
