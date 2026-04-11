@@ -1,0 +1,98 @@
+{
+  "project": "Colegio Técnico Romega - Institutional Website & CMS",
+  "theme_and_archetype": {
+    "theme": "LIGHT",
+    "archetype": "4 (Swiss & High-Contrast - Institutional Adaptation)",
+    "description": "A clean, elegant, and academic design focusing on authority, clarity, and trust. The UI utilizes structured grids, generous spacing, and sober institutional colors (Blue, White, Gray)."
+  },
+  "typography": {
+    "headings_font": "Outfit",
+    "body_font": "Manrope",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight font-bold text-slate-900",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight font-bold text-slate-900",
+      "h3": "text-xl sm:text-2xl font-semibold text-slate-800",
+      "h4": "text-lg sm:text-xl font-medium text-slate-800",
+      "body": "text-base leading-relaxed text-slate-600",
+      "small": "text-sm text-slate-500",
+      "overline": "text-xs font-bold tracking-[0.2em] uppercase text-blue-600"
+    },
+    "guidelines": "Do not use Inter, Roboto, or generic sans for headings. Use 'Outfit' for a modern academic feel. Maintain tight tracking on headings and loose leading on body text."
+  },
+  "colors": {
+    "primary": {
+      "DEFAULT": "#1E40AF",
+      "foreground": "#FFFFFF",
+      "hover": "#1E3A8A"
+    },
+    "secondary": {
+      "DEFAULT": "#F1F5F9",
+      "foreground": "#334155",
+      "hover": "#E2E8F0"
+    },
+    "background": "#FFFFFF",
+    "surface": "#F8FAFC",
+    "border": "#E2E8F0",
+    "text": {
+      "primary": "#0F172A",
+      "secondary": "#475569",
+      "muted": "#94A3B8"
+    },
+    "accent": {
+      "DEFAULT": "#2563EB",
+      "foreground": "#FFFFFF"
+    },
+    "guidelines": "Strict adherence to sober institutional colors: Navy Blue, White, and Slate Grays. Avoid neon or pastel tones. Use high contrast for readability, meeting WCAG AA standards."
+  },
+  "layout_and_spacing": {
+    "philosophy": "Generous Spacing Philosophy. Use p-8, p-12, and p-16 for section padding to allow content to breathe.",
+    "grids": {
+      "marketing": "Use Bento Grids (MODE A: THE 'TETRIS' GRID) for the 'Oferta Académica' and 'Noticias' sections to create visual interest. Asymmetrical spans (e.g., col-span-8 and col-span-4).",
+      "dashboard": "Use Control Room Grid (MODE B) for the CMS Admin Panel. Dense, cardless or 1px border panels with tight gaps (gap-4 or gap-6)."
+    },
+    "components": {
+      "cards": "Subtle border (1px border-slate-200), flat background, no soft drop shadows. On hover, use a slight lift (-translate-y-1) and shadow-md.",
+      "header": "Crystal Glassmorphism over the Hero section (backdrop-blur-xl bg-white/80 border-b border-slate-200/50), ensuring high contrast for navigation links.",
+      "footer": "High contrast shift. Use very dark blue (bg-slate-950) with white text, py-20 padding, and large structural typography."
+    }
+  },
+  "components_strategy": {
+    "public_site": "Use custom HTML/Tailwind for marketing layouts (Hero, Bento Grid Offerings). No rigid Shadcn layout wrappers. Ensure overlapping and visual tension.",
+    "interactive_elements": "Heavily customized Shadcn UI for forms, dialogues, and navigation. Forms must use Shadcn 'Input', 'Textarea', and 'Button'.",
+    "cms_dashboard": "Rely entirely on Shadcn UI (Tables, Dialogs, Dropdowns, Tabs, Forms). Go for a 'cardless' crisp technical look (Grid Borders surface strategy). Sidebar navigation with clear state indications."
+  },
+  "motion_and_interactions": {
+    "hover_states": "All interactive elements must explicitly change text and background color on hover. e.g., hover:bg-blue-800 hover:text-white.",
+    "animations": "Subtle entrance animations using Framer Motion (opacity and y-axis shift) for lists and grids. Do not over-animate. Ensure 'prefers-reduced-motion' compatibility."
+  },
+  "media": {
+    "image_urls": {
+      "hero_background": {
+        "url": "https://images.unsplash.com/photo-1702737832079-ed5864397f92?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwyfHxoaWdoJTIwc2Nob29sJTIwY2FtcHVzfGVufDB8fHx8MTc3NTkzODg5N3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Large brick school building with a clock tower. Use with a gradient overlay (bg-gradient-to-r from-slate-900/80 via-slate-900/50 to-transparent) so white text is readable."
+      },
+      "students_studying": {
+        "url": "https://images.unsplash.com/photo-1758270704524-596810e891b5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwzfHxzdHVkZW50cyUyMHN0dWR5aW5nJTIwaW4lMjBjbGFzc3Jvb218ZW58MHx8fHwxNzc1OTM4ODk3fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Students studying in a classroom. Use in the 'Oferta Académica' or 'Recursos' sections."
+      },
+      "abstract_background": {
+        "url": "https://images.unsplash.com/photo-1760865245507-35889582c231?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGJsdWUlMjBhbmQlMjBncmV5JTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3NzU5Mzg5MDF8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract blue and white blurred background. Use for secondary section backgrounds (like Contact or CMS login)."
+      }
+    },
+    "logo_guidelines": "Instead of a generic image placeholder, use a composition of a Lucide Icon (e.g., GraduationCap, text-blue-700) and text ('Colegio Romega') with 'Outfit' font for the brand logo. NEVER use via.placeholder.com."
+  },
+  "testing_and_accessibility": {
+    "attributes": "All interactive elements MUST include a 'data-testid' attribute (e.g., data-testid='contact-submit-button').",
+    "contrast": "Ensure all text overlaid on images or colored backgrounds meets APCA/WCAG AA contrast standards. Use text-shadow if necessary."
+  },
+  "instructions_to_main_agent": [
+    "Implement the public website with a Hero Banner, History (Misión/Visión), Oferta Académica, Noticias, Recursos, and Contacto sections.",
+    "Implement a secure hybrid CMS dashboard for admin users to manage news, resources, and view contact messages.",
+    "Apply the styling guidelines strictly: Outfit for headings, Manrope for body, and a blue/white/slate color palette.",
+    "For the CMS, build a sidebar layout. Use Shadcn components for tables and forms.",
+    "The Contact form must connect to a hybrid approach (saving to DB and showing a toast notification representing an email sent).",
+    "Replace 'Uso de marcadores de posición' requested by the user with actual images provided in 'media.image_urls' or Lucide icons, as placeholders are strictly forbidden.",
+    "Ensure the public navigation header is sticky and uses the 'Crystal Glassmorphism' technique."
+  ]
+}
