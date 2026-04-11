@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LayoutDashboard, Newspaper, Files, Mail, LogOut } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Files, Mail, LogOut, UserCheck } from 'lucide-react';
 import axios from 'axios';
 
 export default function AdminLayout() {
@@ -24,6 +24,7 @@ export default function AdminLayout() {
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
     { name: 'Noticias', path: '/admin/noticias', icon: Newspaper },
     { name: 'Recursos', path: '/admin/recursos', icon: Files },
+    { name: 'Admisiones', path: '/admin/admisiones', icon: UserCheck },
     { name: 'Mensajes', path: '/admin/mensajes', icon: Mail },
   ];
 

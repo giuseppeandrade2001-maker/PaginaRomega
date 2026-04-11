@@ -156,6 +156,14 @@ class ContactMessage(BaseModel):
     subject: str
     message: str
 
+class AdmissionRequest(BaseModel):
+    student_name: str
+    student_grade: str
+    parent_name: str
+    email: EmailStr
+    phone: str
+    comments: Optional[str] = None
+
 # Auth Routes
 @app.post("/api/auth/login")
 async def login(req: LoginRequest, response: Response, request: Request):
@@ -236,6 +244,17 @@ async def submit_contact(msg: ContactMessage):
     
     return {"message": "Mensaje enviado y guardado correctamente."}
 
+@app.post("/api/admissions")
+async def submit_admission(adm: AdmissionRequest):
+    new_adm = {
+        **adm.model_dump(),
+        "created_at": datetime.now(timezone.utc),
+        "status": "pending"
+    }
+    result = await db.admissions.insert_one(new_adm)
+    logger.info(f"Nueva pre-inscripción: {adm.student_name}")
+    return {"message": "Pre-inscripción enviada correctamente."}
+
 # Admin Routes
 @app.post("/api/news")
 async def create_news(news: NewsItem, user: dict = Depends(require_admin)):
@@ -306,6 +325,27 @@ async def mark_message_read(id: str, user: dict = Depends(require_admin)):
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Message not found")
     return {"message": "Marked as read"}
+
+@app.get("/api/admissions")
+async def get_admissions(user: dict = Depends(require_admin)):
+    cursor = db.admissions.find().sort("created_at", -1)
+    admissions = await cursor.to_list(length=100)
+    for a in admissions:
+        a["id"] = str(a.pop("_id"))
+    return {"data": admissions}
+
+@app.put("/api/admissions/{id}/status")
+async def update_admission_status(id: str, status_data: dict, user: dict = Depends(require_admin)):
+    new_status = status_data.get("status")
+    if not new_status:
+        raise HTTPException(status_code=400, detail="Status required")
+    result = await db.admissions.update_one(
+        {"_id": ObjectId(id)},
+        {"$set": {"status": new_status}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Admission request not found")
+    return {"message": "Status updated"}
 
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=8001, reload=True)

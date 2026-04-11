@@ -18,6 +18,9 @@ import ManageNews from './pages/admin/ManageNews';
 import ManageResources from './pages/admin/ManageResources';
 import ContactMessages from './pages/admin/ContactMessages';
 
+import ManageAdmissions from './pages/admin/ManageAdmissions';
+import Admissions from './pages/Admissions';
+
 export default function App() {
   return (
     <AuthProvider>
@@ -31,6 +34,7 @@ export default function App() {
             <Route path="/noticias" element={<News />} />
             <Route path="/recursos" element={<Resources />} />
             <Route path="/contacto" element={<Contact />} />
+            <Route path="/admisiones" element={<Admissions />} />
           </Route>
 
           {/* Admin Routes */}
@@ -40,6 +44,7 @@ export default function App() {
             <Route path="noticias" element={<ManageNews />} />
             <Route path="recursos" element={<ManageResources />} />
             <Route path="mensajes" element={<ContactMessages />} />
+            <Route path="admisiones" element={<ManageAdmissions />} />
           </Route>
         </Routes>
       </BrowserRouter>

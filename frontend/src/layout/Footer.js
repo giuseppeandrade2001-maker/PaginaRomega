@@ -31,6 +31,7 @@ export default function Footer() {
             <li><Link to="/oferta-academica" className="text-slate-400 hover:text-blue-400 transition-colors">Oferta Académica</Link></li>
             <li><Link to="/noticias" className="text-slate-400 hover:text-blue-400 transition-colors">Noticias y Actividades</Link></li>
             <li><Link to="/recursos" className="text-slate-400 hover:text-blue-400 transition-colors">Recursos</Link></li>
+            <li><Link to="/admisiones" className="text-slate-400 hover:text-blue-400 transition-colors">Admisiones</Link></li>
           </ul>
         </div>
 

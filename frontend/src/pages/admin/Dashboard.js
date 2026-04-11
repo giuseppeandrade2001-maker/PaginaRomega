@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Newspaper, Files, Mail } from 'lucide-react';
+import { Newspaper, Files, Mail, UserCheck } from 'lucide-react';
 
 export default function Dashboard() {
-  const [stats, setStats] = useState({ news: 0, resources: 0, messages: 0 });
+  const [stats, setStats] = useState({ news: 0, resources: 0, messages: 0, admissions: 0 });
 
   useEffect(() => {
     fetchStats();
@@ -11,15 +11,17 @@ export default function Dashboard() {
 
   const fetchStats = async () => {
     try {
-      const [newsRes, resRes, msgRes] = await Promise.all([
+      const [newsRes, resRes, msgRes, admRes] = await Promise.all([
         axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/news`),
         axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/resources`),
-        axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/contact-messages`, { withCredentials: true })
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/contact-messages`, { withCredentials: true }),
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admissions`, { withCredentials: true })
       ]);
       setStats({
         news: newsRes.data.data.length,
         resources: resRes.data.data.length,
-        messages: msgRes.data.data.length
+        messages: msgRes.data.data.length,
+        admissions: admRes.data.data.length
       });
     } catch (e) {
       console.error(e);
@@ -27,9 +29,10 @@ export default function Dashboard() {
   };
 
   const cards = [
-    { title: 'Noticias Publicadas', count: stats.news, icon: Newspaper, color: 'text-blue-600', bg: 'bg-blue-100' },
-    { title: 'Recursos Activos', count: stats.resources, icon: Files, color: 'text-indigo-600', bg: 'bg-indigo-100' },
-    { title: 'Mensajes Recibidos', count: stats.messages, icon: Mail, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+    { title: 'Noticias', count: stats.news, icon: Newspaper, color: 'text-blue-600', bg: 'bg-blue-100' },
+    { title: 'Recursos', count: stats.resources, icon: Files, color: 'text-indigo-600', bg: 'bg-indigo-100' },
+    { title: 'Mensajes', count: stats.messages, icon: Mail, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+    { title: 'Admisiones', count: stats.admissions, icon: UserCheck, color: 'text-amber-600', bg: 'bg-amber-100' },
   ];
 
   return (
