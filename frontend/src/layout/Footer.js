@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, MapPin, Mail, Phone } from 'lucide-react';
+import { GraduationCap, MapPin, Mail, Phone, Facebook, Instagram } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -11,9 +11,17 @@ export default function Footer() {
             <GraduationCap className="h-10 w-10 text-blue-400" />
             <span className="font-heading font-bold text-3xl">Colegio Técnico Romega</span>
           </Link>
-          <p className="text-slate-400 max-w-sm leading-relaxed mb-6">
+          <p className="text-slate-400 max-w-sm leading-relaxed mb-8">
             Formando líderes del mañana con excelencia académica, valores y compromiso social.
           </p>
+          <div className="flex gap-4">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all">
+              <Facebook className="h-5 w-5" />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-pink-600 hover:border-pink-600 transition-all">
+              <Instagram className="h-5 w-5" />
+            </a>
+          </div>
         </div>
         
         <div>

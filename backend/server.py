@@ -147,6 +147,7 @@ class ResourceItem(BaseModel):
     file_url: str
     category: str # "estudiantes" or "docentes"
     description: Optional[str] = None
+    subcategory: Optional[str] = None
 
 class ContactMessage(BaseModel):
     name: str
@@ -245,6 +246,15 @@ async def create_news(news: NewsItem, user: dict = Depends(require_admin)):
     doc.pop("_id", None)
     return doc
 
+@app.put("/api/news/{id}")
+async def update_news(id: str, news: NewsItem, user: dict = Depends(require_admin)):
+    doc = news.model_dump()
+    result = await db.news.update_one({"_id": ObjectId(id)}, {"$set": doc})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="News not found")
+    doc["id"] = id
+    return doc
+
 @app.delete("/api/news/{id}")
 async def delete_news(id: str, user: dict = Depends(require_admin)):
     result = await db.news.delete_one({"_id": ObjectId(id)})
@@ -260,6 +270,15 @@ async def create_resource(res: ResourceItem, user: dict = Depends(require_admin)
     result = await db.resources.insert_one(doc)
     doc["id"] = str(result.inserted_id)
     doc.pop("_id", None)
+    return doc
+
+@app.put("/api/resources/{id}")
+async def update_resource(id: str, res: ResourceItem, user: dict = Depends(require_admin)):
+    doc = res.model_dump()
+    result = await db.resources.update_one({"_id": ObjectId(id)}, {"$set": doc})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Resource not found")
+    doc["id"] = id
     return doc
 
 @app.delete("/api/resources/{id}")

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { ArrowRight, BookOpen, GraduationCap, Library, Clock } from 'lucide-react';
-import { Button } from '../components/ui/button';
+import { ArrowRight, BookOpen, GraduationCap, Library, Clock, Image as ImageIcon } from 'lucide-react';
+import { Button } from '../../components/ui/button';
 
 export default function Home() {
   const [recentNews, setRecentNews] = useState([]);
@@ -18,6 +18,13 @@ export default function Home() {
     };
     fetchNews();
   }, []);
+
+  const galleryImages = [
+    "https://images.unsplash.com/photo-1758270704524-596810e891b5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwzfHxzdHVkZW50cyUyMHN0dWR5aW5nJTIwaW4lMjBjbGFzc3Jvb218ZW58MHx8fHwxNzc1OTM4ODk3fDA&ixlib=rb-4.1.0&q=85",
+    "https://images.unsplash.com/photo-1577896851231-70ef18881754?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwzfHxzY2hvb2wlMjBsaWJyYXJ5fGVufDB8fHx8MTc3NTkzODg5N3ww&ixlib=rb-4.1.0&q=85",
+    "https://images.unsplash.com/photo-1546410531-b4ec756317b6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwzfHxzdHVkZW50cyUyMGxlYXJuaW5nfGVufDB8fHx8MTc3NTkzODg5N3ww&ixlib=rb-4.1.0&q=85",
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwxfHxzdHVkZW50c3xlbnwwfHx8fDE3NzU5Mzg4OTN8MA&ixlib=rb-4.1.0&q=85"
+  ];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -81,8 +88,32 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Gallery Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 text-slate-400 mb-6">
+            <ImageIcon className="w-8 h-8" />
+          </div>
+          <h2 className="font-heading text-4xl font-bold text-slate-900 mb-4">Vida Escolar</h2>
+          <p className="text-lg text-slate-600 font-sans max-w-2xl mx-auto mb-12">Un vistazo a nuestras actividades, instalaciones y el entorno que compartimos día a día en el Colegio Técnico Romega.</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {galleryImages.map((src, idx) => (
+              <div key={idx} className="relative h-64 overflow-hidden rounded-2xl shadow-sm group">
+                <img 
+                  src={src} 
+                  alt={`Galería ${idx + 1}`} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/20 transition-colors duration-300"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Recent News Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-slate-50 border-t border-slate-200">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-end mb-12">
             <div className="max-w-2xl">
@@ -96,7 +127,7 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {recentNews.length > 0 ? recentNews.map((news) => (
-              <div key={news.id} className="group flex flex-col bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all">
+              <div key={news.id} className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all">
                 <div className="relative h-56 bg-slate-200 overflow-hidden">
                   {news.image_url ? (
                     <img src={news.image_url} alt={news.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -123,7 +154,7 @@ export default function Home() {
                 </div>
               </div>
             )) : (
-              <div className="col-span-3 text-center py-12 text-slate-500">
+              <div className="col-span-3 text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-100 shadow-sm">
                 Aún no hay noticias publicadas.
               </div>
             )}

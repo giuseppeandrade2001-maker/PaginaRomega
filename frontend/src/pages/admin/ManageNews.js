@@ -6,11 +6,12 @@ import { Textarea } from '../../components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { format } from 'date-fns';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, Edit } from 'lucide-react';
 
 export default function ManageNews() {
   const [news, setNews] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [formData, setFormData] = useState({ title: '', content: '', image_url: '', category: 'General' });
 
   useEffect(() => {
@@ -26,15 +27,36 @@ export default function ManageNews() {
     }
   };
 
+  const handleOpenDialog = (item = null) => {
+    if (item) {
+      setEditId(item.id);
+      setFormData({
+        title: item.title || '',
+        content: item.content || '',
+        image_url: item.image_url || '',
+        category: item.category || 'General'
+      });
+    } else {
+      setEditId(null);
+      setFormData({ title: '', content: '', image_url: '', category: 'General' });
+    }
+    setIsOpen(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/news`, formData, { withCredentials: true });
+      if (editId) {
+        await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/news/${editId}`, formData, { withCredentials: true });
+      } else {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/news`, formData, { withCredentials: true });
+      }
       setIsOpen(false);
       setFormData({ title: '', content: '', image_url: '', category: 'General' });
+      setEditId(null);
       fetchNews();
     } catch (error) {
-      console.error('Error creating news:', error);
+      console.error('Error saving news:', error);
     }
   };
 
@@ -56,14 +78,12 @@ export default function ManageNews() {
           <p className="text-slate-500 mt-1 text-sm">Administra las publicaciones de la página principal.</p>
         </div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-blue-700 hover:bg-blue-800 text-white rounded-lg flex gap-2">
-              <Plus className="h-4 w-4" /> Agregar Noticia
-            </Button>
-          </DialogTrigger>
+          <Button onClick={() => handleOpenDialog()} className="bg-blue-700 hover:bg-blue-800 text-white rounded-lg flex gap-2">
+            <Plus className="h-4 w-4" /> Agregar Noticia
+          </Button>
           <DialogContent className="max-w-2xl bg-white">
             <DialogHeader>
-              <DialogTitle className="font-heading text-xl">Crear Nueva Noticia</DialogTitle>
+              <DialogTitle className="font-heading text-xl">{editId ? 'Editar Noticia' : 'Crear Nueva Noticia'}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div>
@@ -82,7 +102,7 @@ export default function ManageNews() {
                 <label className="text-sm font-medium mb-1 block">Contenido</label>
                 <Textarea value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} required rows={6} data-testid="news-content-input" />
               </div>
-              <Button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white" data-testid="news-submit-button">Publicar Noticia</Button>
+              <Button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white" data-testid="news-submit-button">{editId ? 'Guardar Cambios' : 'Publicar Noticia'}</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -109,9 +129,14 @@ export default function ManageNews() {
                 <TableCell>{item.category}</TableCell>
                 <TableCell>{item.created_at ? format(new Date(item.created_at), 'dd/MM/yyyy') : '-'}</TableCell>
                 <TableCell className="text-right">
-                  <Button variant="destructive" size="icon" onClick={() => handleDelete(item.id)} data-testid={`delete-news-${item.id}`}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" size="icon" onClick={() => handleOpenDialog(item)} data-testid={`edit-news-${item.id}`}>
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button variant="destructive" size="icon" onClick={() => handleDelete(item.id)} data-testid={`delete-news-${item.id}`}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
