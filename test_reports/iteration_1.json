@@ -1,0 +1,14 @@
+{
+  "summary": "Verificación visual y estructural de los iconos de Facebook e Instagram en el footer de /app/index.html. Ambos iconos son ahora SVGs inline y se renderizan correctamente dentro de sus botones circulares.",
+  "tested_scope": ["frontend"],
+  "passed": [
+    "Anchor Facebook con aria-label='Facebook institucional' contiene un <svg> (1 child <path>), 20x20 px, sin etiqueta <i>",
+    "Anchor Instagram con aria-label='Instagram institucional' contiene un <svg> (children: rect, path, line), 20x20 px, sin etiqueta <i>",
+    "Captura visual del footer confirma que ambos iconos son visibles (ya no son círculos vacíos)"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "N/A (skipped)", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}
