@@ -1,0 +1,23 @@
+{
+  "summary": "Frontend-only smoke test of Colegio Técnico Romega static site. Verified navbar/hero title, responsive nav (desktop vs hamburger), Equipo layout (flex-wrap for Directivos, responsive grid for Docentes stacking to 1 col at 375px), footer social buttons (Facebook/Instagram with text+icon), and horizontal-overflow at 375px and 1366px. All 12 checks passed.",
+  "tested_scope": ["frontend"],
+  "passed": [
+    "Navbar title 'Colegio Técnico Romega' correct",
+    "Hero H1 rendered ('Formando Líderes ... Futuro')",
+    "Desktop @1366: horizontal nav visible, hamburger hidden",
+    "Mobile @375: desktop nav hidden, hamburger visible",
+    "Hamburger toggles mobile menu open/close via #menu-toggle",
+    "No horizontal overflow at 375px (scrollWidth == clientWidth == 375)",
+    "No horizontal overflow at 1366px",
+    "Equipo > Directivos uses flex-wrap justify-center centered container",
+    "Equipo > Docentes grid: 3 columns at 1366px, 1 column at 375px (responsive stacking)",
+    "Footer Facebook button present with text 'Facebook' and correct href",
+    "Footer Instagram button present with text 'Instagram' and correct href",
+    "rounded-3xl and shadow classes applied across cards (visually confirmed)"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "N/A (no backend)", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}

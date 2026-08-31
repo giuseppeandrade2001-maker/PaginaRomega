@@ -64,48 +64,48 @@
   </a>
 
   <!-- ================= ENCABEZADO (HEADER) ================= -->
-  <header class="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/90 border-b border-slate-200/50 transition-all duration-300">
-    <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+  <header class="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/95 border-b border-slate-200/50 shadow-sm transition-all duration-300">
+    <div class="container mx-auto px-4 h-24 flex items-center justify-between">
       
       <!-- LOGO -->
-      <a href="#inicio" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-lg p-1" aria-label="Ir a la página de inicio">
-        <img src="assets/logo.png" alt="Logo oficial del Colegio Técnico Romega" class="h-12 w-12 object-contain" />
-        <span class="font-heading font-bold text-xl sm:text-2xl text-slate-900 group-hover:text-blue-800 transition-colors">
-          Colegio Romega
+      <a href="#inicio" class="flex items-center gap-4 group focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-xl p-1" aria-label="Ir a la página de inicio">
+        <img src="assets/logo.png" alt="Logo oficial del Colegio Técnico Romega" class="h-14 w-14 object-contain transition-transform duration-300 group-hover:scale-105" />
+        <span class="font-heading font-bold text-2xl text-slate-900 group-hover:text-blue-700 transition-colors">
+          Colegio Técnico Romega
         </span>
       </a>
       
       <!-- MENÚ DE NAVEGACIÓN ESCRITORIO -->
-      <nav class="hidden md:flex items-center gap-6" aria-label="Menú principal">
-        <a href="#inicio" class="nav-link font-sans font-medium text-blue-700 transition-colors hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2">Inicio</a>
-        <a href="#historia" class="nav-link font-sans font-medium text-slate-600 transition-colors hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2">Historia</a>
-        <a href="#oferta-academica" class="nav-link font-sans font-medium text-slate-600 transition-colors hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2">Oferta Académica</a>
-        <a href="#equipo" class="nav-link font-sans font-medium text-slate-600 transition-colors hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2">Nuestro Equipo</a>
-        <a href="#noticias" class="nav-link font-sans font-medium text-slate-600 transition-colors hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2">Noticias</a>
-        <a href="#recursos" class="nav-link font-sans font-medium text-slate-600 transition-colors hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2">Recursos</a>
-        <a href="#contacto" class="nav-link font-sans font-medium text-slate-600 transition-colors hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded px-2">Contacto</a>
+      <nav class="hidden lg:flex items-center gap-8" aria-label="Menú principal">
+        <a href="#inicio" class="nav-link font-sans font-medium text-blue-700 transition-all hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md px-2 py-1">Inicio</a>
+        <a href="#historia" class="nav-link font-sans font-medium text-slate-600 transition-all hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md px-2 py-1">Historia</a>
+        <a href="#oferta-academica" class="nav-link font-sans font-medium text-slate-600 transition-all hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md px-2 py-1">Oferta Académica</a>
+        <a href="#equipo" class="nav-link font-sans font-medium text-slate-600 transition-all hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md px-2 py-1">Nuestro Equipo</a>
+        <a href="#noticias" class="nav-link font-sans font-medium text-slate-600 transition-all hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md px-2 py-1">Noticias</a>
+        <a href="#recursos" class="nav-link font-sans font-medium text-slate-600 transition-all hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md px-2 py-1">Recursos</a>
+        <a href="#contacto" class="nav-link font-sans font-medium text-slate-600 transition-all hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md px-2 py-1">Contacto</a>
         
-        <a href="#admisiones" class="bg-blue-700 hover:bg-blue-800 text-white rounded-full px-6 py-2.5 font-medium transition-colors shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2" aria-label="Ir a sección de Pre-inscripción">
+        <a href="#admisiones" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2.5 font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2" aria-label="Ir a sección de Pre-inscripción">
           Pre-inscríbete
         </a>
       </nav>
 
       <!-- BOTÓN MENÚ MÓVIL -->
-      <button id="menu-toggle" class="md:hidden p-2 text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded" aria-label="Abrir o cerrar menú de navegación móvil" aria-expanded="false" aria-controls="mobile-menu">
-        <i data-lucide="menu" class="h-6 w-6"></i>
+      <button id="menu-toggle" class="lg:hidden p-2 text-slate-600 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-lg transition-colors" aria-label="Abrir o cerrar menú de navegación móvil" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu" class="h-8 w-8"></i>
       </button>
     </div>
 
     <!-- MENÚ MÓVIL DESPLEGABLE -->
-    <nav id="mobile-menu" class="md:hidden hidden bg-white border-b border-slate-200 px-4 py-2 flex flex-col shadow-lg absolute w-full left-0 top-20" aria-label="Menú móvil">
-      <a href="#inicio" class="nav-link text-slate-600 font-medium py-3 border-b border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600">Inicio</a>
-      <a href="#historia" class="nav-link text-slate-600 font-medium py-3 border-b border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600">Historia</a>
-      <a href="#oferta-academica" class="nav-link text-slate-600 font-medium py-3 border-b border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600">Oferta Académica</a>
-      <a href="#equipo" class="nav-link text-slate-600 font-medium py-3 border-b border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600">Nuestro Equipo</a>
-      <a href="#noticias" class="nav-link text-slate-600 font-medium py-3 border-b border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600">Noticias</a>
-      <a href="#recursos" class="nav-link text-slate-600 font-medium py-3 border-b border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600">Recursos</a>
-      <a href="#admisiones" class="nav-link text-blue-700 font-bold py-3 border-b border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600">Admisiones</a>
-      <a href="#contacto" class="nav-link text-slate-600 font-medium py-3 focus:outline-none focus:ring-2 focus:ring-blue-600">Contacto</a>
+    <nav id="mobile-menu" class="lg:hidden hidden bg-white border-b border-slate-200 px-6 py-4 flex flex-col shadow-2xl absolute w-full left-0 top-24" aria-label="Menú móvil">
+      <a href="#inicio" class="nav-link text-slate-600 font-medium py-4 border-b border-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md">Inicio</a>
+      <a href="#historia" class="nav-link text-slate-600 font-medium py-4 border-b border-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md">Historia</a>
+      <a href="#oferta-academica" class="nav-link text-slate-600 font-medium py-4 border-b border-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md">Oferta Académica</a>
+      <a href="#equipo" class="nav-link text-slate-600 font-medium py-4 border-b border-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md">Nuestro Equipo</a>
+      <a href="#noticias" class="nav-link text-slate-600 font-medium py-4 border-b border-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md">Noticias</a>
+      <a href="#recursos" class="nav-link text-slate-600 font-medium py-4 border-b border-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md">Recursos</a>
+      <a href="#contacto" class="nav-link text-slate-600 font-medium py-4 border-b border-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md">Contacto</a>
+      <a href="#admisiones" class="nav-link text-blue-700 font-bold py-4 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md">Pre-inscríbete</a>
     </nav>
   </header>
 
@@ -115,30 +115,30 @@
     <!-- ================= SECCIÓN: INICIO ================= -->
     <section id="inicio" class="page-section" aria-labelledby="inicio-title">
       <!-- HERO BANNER -->
-      <div class="relative w-full h-[600px] flex items-center justify-center overflow-hidden">
+      <div class="relative w-full min-h-[80vh] flex items-center justify-center overflow-hidden">
         <!-- Imagen de fondo del Hero -->
-        <img src="assets/cometa_1.png" alt="Estudiantes del Colegio Técnico Romega en el Día de la Cometa" class="absolute inset-0 w-full h-full object-cover object-top z-0" />
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-transparent z-10"></div>
+        <img src="assets/cometa_1.png" alt="Estudiantes del Colegio Técnico Romega en el Día de la Cometa" class="absolute inset-0 w-full h-full object-cover object-center z-0" />
+        <div class="absolute inset-0 bg-slate-950/70 z-10"></div>
         
-        <div class="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 text-white">
-          <div class="max-w-2xl">
+        <div class="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 text-white mt-12 md:mt-0">
+          <div class="max-w-3xl">
             <!-- Título y Texto de Bienvenida -->
-            <span class="inline-block py-1 px-3 rounded-full bg-blue-600/30 text-blue-200 font-semibold tracking-wider text-sm mb-4 border border-blue-400/50">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-blue-500/20 text-blue-300 font-bold tracking-widest text-sm mb-6 border border-blue-400/30 backdrop-blur-sm shadow-sm">
               EXCELENCIA EDUCATIVA
             </span>
-            <h1 id="inicio-title" class="font-heading text-5xl md:text-6xl font-extrabold leading-tight mb-6">
-              Formando Líderes para el <span class="text-blue-400">Futuro</span>
+            <h1 id="inicio-title" class="font-heading text-5xl md:text-7xl font-extrabold leading-tight mb-6 tracking-tight drop-shadow-md">
+              Formando Líderes <br class="hidden md:block" /> para el <span class="text-blue-400">Futuro</span>
             </h1>
-            <p class="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+            <p class="text-lg md:text-2xl text-slate-200 mb-10 leading-relaxed max-w-2xl font-light">
               El Colegio Técnico Romega es una institución privada comprometida con el desarrollo integral, la innovación académica y la construcción de valores para la sociedad.
             </p>
             
             <!-- Botones del Banner -->
             <div class="flex flex-col sm:flex-row gap-4">
-              <a href="#oferta-academica" class="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-8 py-3.5 font-semibold transition-colors shadow-md flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900">
-                Nuestra Oferta <i data-lucide="arrow-right" class="ml-2 h-4 w-4" aria-hidden="true"></i>
+              <a href="#oferta-academica" class="bg-blue-600 hover:bg-blue-500 text-white rounded-full px-8 py-4 font-bold transition-all shadow-lg hover:shadow-blue-500/25 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 text-lg">
+                Nuestra Oferta <i data-lucide="arrow-right" class="ml-2 h-5 w-5" aria-hidden="true"></i>
               </a>
-              <a href="#contacto" class="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-md px-8 py-3.5 font-semibold transition-colors shadow-sm text-center focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900">
+              <a href="#contacto" class="bg-white/10 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md border border-white/30 rounded-full px-8 py-4 font-bold transition-all shadow-lg text-center focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900 text-lg">
                 Contáctanos
               </a>
             </div>
@@ -403,15 +403,15 @@
 
     <!-- ================= SECCIÓN: NUESTRO EQUIPO ================= -->
     <section id="equipo" class="page-section hidden-section bg-slate-50 py-24" aria-labelledby="equipo-title">
-      <div class="container mx-auto px-4 max-w-6xl">
+      <div class="container mx-auto px-4 max-w-7xl">
         <div class="text-center mb-20">
           <h1 id="equipo-title" class="font-heading text-5xl md:text-6xl font-extrabold text-slate-900 mb-6">Nuestro Equipo</h1>
-          <p class="text-xl text-slate-600 max-w-2xl mx-auto">Conoce al grupo de directivos y formadores que hacen posible la excelencia en el Colegio Técnico Romega.</p>
+          <p class="text-xl text-slate-600 max-w-2xl mx-auto">Conoce al talentoso grupo de profesionales, educadores y personal administrativo que hace posible la excelencia en el Colegio Técnico Romega.</p>
         </div>
 
         <!-- Grupo: Directivos -->
         <div class="mb-20">
-          <div class="flex items-center gap-4 mb-8">
+          <div class="flex items-center justify-center gap-4 mb-10">
             <div class="h-14 w-14 rounded-2xl flex items-center justify-center bg-amber-100" aria-hidden="true">
               <i data-lucide="building" class="h-7 w-7 text-amber-700"></i>
             </div>
@@ -420,12 +420,108 @@
               <p class="text-slate-600">Líderes comprometidos con la visión institucional.</p>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="flex flex-wrap justify-center gap-8">
             <!-- Persona 1 -->
-            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm transition-all duration-300 flex flex-col items-center text-center">
-              <div class="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-4 text-3xl font-bold text-blue-700">L</div>
-              <h3 class="font-heading text-xl font-bold text-slate-900 mb-1">Luis Alberto Forero Rocha</h3>
-              <p class="text-blue-600 font-medium mb-2">Rector</p>
+            <div class="w-full sm:w-[340px] bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-28 h-28 rounded-full bg-blue-50 border-4 border-white shadow-sm flex items-center justify-center mb-6 text-4xl font-bold text-blue-700">L</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-2">Luis Alberto Forero Rocha</h3>
+              <p class="text-blue-600 font-bold mb-4 bg-blue-50 px-4 py-1 rounded-full text-sm uppercase tracking-wide">Rector</p>
+              <a href="mailto:rectoria@colegioromega.edu.co" class="mt-auto flex items-center justify-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-700 bg-slate-50 hover:bg-blue-50 px-4 py-2.5 rounded-xl w-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <i data-lucide="mail" class="h-4 w-4"></i> rectoria@colegioromega...
+              </a>
+            </div>
+            <!-- Persona 2 -->
+            <div class="w-full sm:w-[340px] bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-28 h-28 rounded-full bg-blue-50 border-4 border-white shadow-sm flex items-center justify-center mb-6 text-4xl font-bold text-blue-700">A</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-2">Adalberto Alcides Amaya Navarro</h3>
+              <p class="text-blue-600 font-bold mb-4 bg-blue-50 px-4 py-1 rounded-full text-sm uppercase tracking-wide">Representante Legal</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grupo: Docentes -->
+        <div class="mb-20 pt-10 border-t border-slate-200/60">
+          <div class="flex items-center justify-center gap-4 mb-10">
+            <div class="h-14 w-14 rounded-2xl flex items-center justify-center bg-indigo-100" aria-hidden="true">
+              <i data-lucide="graduation-cap" class="h-7 w-7 text-indigo-700"></i>
+            </div>
+            <div>
+              <h2 class="font-heading text-3xl font-bold text-slate-900">Docentes</h2>
+              <p class="text-slate-600">Nuestros educadores formadores de excelencia.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Docente 1 -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-5 text-3xl font-bold text-slate-400">A</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">Ashley Dayana Rodriguez Alcala</h3>
+              <div class="flex flex-wrap justify-center gap-2">
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Matemáticas</span>
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Técnica</span>
+              </div>
+            </div>
+            <!-- Docente 2 -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-5 text-3xl font-bold text-slate-400">J</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">Jean Andrew Giuseppe Andrade Garcia</h3>
+              <div class="flex flex-wrap justify-center gap-2">
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Sistemas</span>
+              </div>
+            </div>
+            <!-- Docente 3 -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-5 text-3xl font-bold text-slate-400">A</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">Aida Maritza Garcia Perez</h3>
+              <div class="flex flex-wrap justify-center gap-2">
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Física</span>
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Química</span>
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Biología</span>
+              </div>
+            </div>
+            <!-- Docente 4 -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-5 text-3xl font-bold text-slate-400">M</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">Marlene Patricia Cordovez Godoy</h3>
+              <div class="flex flex-wrap justify-center gap-2">
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Humanidades</span>
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Lengua Castellana</span>
+              </div>
+            </div>
+            <!-- Docente 5 -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-5 text-3xl font-bold text-slate-400">G</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">German Forero Diaz</h3>
+              <div class="flex flex-wrap justify-center gap-2">
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Idiomas</span>
+              </div>
+            </div>
+             <!-- Docente 6 -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-5 text-3xl font-bold text-slate-400">D</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-3">Diana Greidy Borja</h3>
+              <div class="flex flex-wrap justify-center gap-2">
+                <span class="text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full text-xs uppercase tracking-wide">Ciencias Sociales</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grupo: Administrativos -->
+        <div class="mb-20 pt-10 border-t border-slate-200/60">
+          <div class="flex items-center justify-center gap-4 mb-10">
+            <div class="h-14 w-14 rounded-2xl flex items-center justify-center bg-emerald-100" aria-hidden="true">
+              <i data-lucide="briefcase" class="h-7 w-7 text-emerald-700"></i>
+            </div>
+            <div>
+              <h2 class="font-heading text-3xl font-bold text-slate-900">Personal Administrativo</h2>
+              <p class="text-slate-600">El equipo detrás del funcionamiento diario del colegio.</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap justify-center gap-8">
+            <div class="w-full sm:w-[340px] bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+              <div class="w-28 h-28 rounded-full bg-slate-100 border-4 border-white shadow-sm flex items-center justify-center mb-6 text-4xl font-bold text-slate-400">L</div>
+              <h3 class="font-heading text-xl font-bold text-slate-900 mb-2">Laura Catalina Forero Morales</h3>
+              <p class="text-emerald-700 font-bold mb-4 bg-emerald-50 px-4 py-1 rounded-full text-sm uppercase tracking-wide">Secretaria Académica</p>
             </div>
           </div>
         </div>
@@ -772,8 +868,8 @@
   </main>
 
   <!-- ================= PIE DE PÁGINA (FOOTER) ================= -->
-  <footer class="bg-slate-950 text-white py-20">
-    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
+  <footer class="bg-slate-950 text-white py-20 border-t-[12px] border-blue-600">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
       <!-- Identidad y Redes -->
       <div class="col-span-1 md:col-span-2">
         <a href="#inicio" class="flex items-center gap-3 mb-6 focus:outline-none focus:ring-2 focus:ring-white rounded-lg p-1 w-max">
@@ -783,12 +879,14 @@
         <p class="text-slate-400 max-w-sm leading-relaxed mb-8">
           Formando líderes del mañana con excelencia académica, valores y compromiso social.
         </p>
-        <div class="flex gap-4">
-          <a href="https://www.facebook.com/Col.Tec.Romega/" target="_blank" rel="noopener noreferrer" aria-label="Facebook institucional" class="h-10 w-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
-             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+        <div class="flex flex-col gap-4 mt-6">
+          <a href="https://www.facebook.com/Col.Tec.Romega/" target="_blank" rel="noopener noreferrer" aria-label="Facebook institucional" class="flex items-center gap-3 px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 hover:text-white hover:bg-blue-600 hover:border-blue-500 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 group">
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="h-6 w-6 group-hover:scale-110 transition-transform" aria-hidden="true"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"/></svg>
+             <span class="font-bold">Facebook</span>
           </a>
-          <a href="https://www.instagram.com/colegioromega/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram institucional" class="h-10 w-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-pink-600 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400">
-             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+          <a href="https://www.instagram.com/colegioromega/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram institucional" class="flex items-center gap-3 px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 hover:text-white hover:bg-pink-600 hover:border-pink-500 transition-all focus:outline-none focus:ring-2 focus:ring-pink-400 group">
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 group-hover:scale-110 transition-transform" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+             <span class="font-bold">Instagram</span>
           </a>
         </div>
       </div>
