@@ -145,3 +145,32 @@ function handleAdmissionsSubmit(event) {
     }, 5000);
   }, 1500);
 }
+
+// --- LIGHTBOX (VISOR DE IMÁGENES) ---
+function openLightbox(src, alt) {
+  const lightbox = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  if (lightbox && img) {
+    img.src = src;
+    img.alt = alt || "Imagen ampliada";
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden'; // Evitar scroll de fondo
+  }
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox) {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = 'auto'; // Restaurar scroll
+  }
+}
+
+// Permitir cerrar lightbox con tecla Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeLightbox();
+  }
+});

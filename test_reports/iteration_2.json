@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend static-site verification. Preview URL returns 502 (Bad Gateway) because supervisor expects /app/frontend and /app/backend which don't exist (site is static HTML at /app root). Verified functionality by loading index.html directly via file://: all requested changes are correctly implemented — gallery/news images use object-contain inside bg-slate-200 containers, lightbox opens on click and closes on Escape, mobile responsive menu toggle works, py-24 padding present in 10 sections.",
+  "tested_scope": ["frontend", "integration"],
+  "passed": [
+    "index.html loads with title 'Colegio Técnico Romega'",
+    "Vida Escolar gallery: 6/6 images have object-contain inside bg-slate-200 containers",
+    "News (Noticias) section: 2/2 images have object-contain inside bg-slate-200 parents",
+    "Lightbox modal exists in DOM, initially hidden",
+    "Clicking a gallery container opens lightbox (flex class added, hidden removed, correct imgSrc, body overflow set to 'hidden')",
+    "Escape key closes the lightbox (hidden class re-applied)",
+    "Mobile viewport (390x844): menu-toggle button is visible, click toggles the mobile-menu open/closed",
+    "10 elements use py-24 padding as requested"
+  ],
+  "failed": [
+    {
+      "area": "deployment/serving",
+      "issue": "Public preview URL (https://romega-academy.preview.emergentagent.com/) returns Cloudflare 502 Bad Gateway. Supervisor 'frontend' and 'backend' services are in FATAL state: 'couldn't chdir to /app/frontend: ENOENT' and 'couldn't chdir to /app/backend: ENOENT'. The project is a static HTML site (index.html, scripts.js, estilos.css, assets/) at /app root — no React frontend or FastAPI backend dirs exist.",
+      "evidence": "supervisorctl status shows backend FATAL, frontend FATAL; browser shows Cloudflare 'Bad gateway 502' error page when visiting the preview URL",
+      "priority": "HIGH"
+    }
+  ],
+  "action_items": [
+    "Configure a static file server (e.g., nginx/python http.server/serve) on the port the emergent preview expects (typically 3000), OR reorganize the site into /app/frontend with a proper index served by supervisor. Without this, no external user can view the site even though the code changes are correct."
+  ],
+  "success_rate": {"backend": "n/a", "frontend": "100% (offline via file://) / 0% (public URL 502)"},
+  "retest_needed": true,
+  "full_testing_deferred": true
+}
